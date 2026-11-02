@@ -1,0 +1,61 @@
+name: Review preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      with_marker:
+        description: Include the lane marker (requires separate publication approval)
+        type: boolean
+        default: false
+        required: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: review-preview-pages
+  cancel-in-progress: false
+
+jobs:
+  review-preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm typecheck
+      - name: Export review copy
+        env:
+          WITH_MARKER: ${{ inputs.with_marker }}
+          LANE_MARKER: ${{ inputs.with_marker && secrets.LANE_MARKER || '' }}
+        shell: bash
+        run: |
+          if [[ "$WITH_MARKER" == true && -z "${LANE_MARKER//[[:space:]]/}" ]]; then
+            echo 'LANE_MARKER secret is required for a marked export.' >&2
+            exit 1
+          fi
+          if [[ "$WITH_MARKER" != true ]]; then
+            export LANE_MARKER=''
+          fi
+          mkdir -p "$RUNNER_TEMP/review-preview"
+          bash scripts/export-preview.sh "$RUNNER_TEMP/review-preview/index.html"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/review-preview
+          retention-days: 1
+      - name: Deploy review copy
+        id: deployment
+        uses: actions/deploy-pages@v4
