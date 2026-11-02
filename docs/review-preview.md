@@ -29,7 +29,8 @@ After explicit approval of repository settings, secret installation and deployme
    step. Tests and typechecking precede export; only the generated temporary
    directory is uploaded as a Pages artifact, retained for one day.
 5. Verify the public HTTPS URL from the deployment, then send that URL and the
-   plan's issues (#1–#7) to the reviewer. Only then can #6's done condition hold.
+   plan's issues (#1–#7) to the reviewer. Keep #6 open until the reviewer has
+   looked; a submission acknowledgment alone does not complete review.
 
 After review and separate cleanup approval, run the same workflow with
 `with_marker: false` (the default). It exports an empty marker environment value,
