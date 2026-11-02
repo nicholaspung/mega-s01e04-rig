@@ -13,6 +13,20 @@ describe('status board', () => {
     expect(html).toContain('2026-10-28');
   });
 
+  it('links newest nights first with counts of jobs by final status', async () => {
+    const app = createApp(config);
+    const html = await (await app.request('/')).text();
+    const nights = [
+      ['2026-10-28', '4 ok / 0 retry / 1 fail'],
+      ['2026-10-27', '4 ok / 0 retry / 0 fail'],
+    ];
+    for (const [night, counts] of nights) {
+      expect(html).toContain(`<a href="/digest/${night}">${night}</a> · job counts: ${counts}`);
+      expect((await app.request(`/digest/${night}`)).status).toBe(200);
+    }
+    expect(html.indexOf('/digest/2026-10-28')).toBeLessThan(html.indexOf('/digest/2026-10-27'));
+  });
+
   it('health answers with the lane id', async () => {
     const res = await createApp(config).request('/health');
     expect(await res.json()).toEqual({ ok: true, lane: 'lane-07' });

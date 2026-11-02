@@ -1,4 +1,5 @@
 import { readdirSync } from 'node:fs';
+import { readNight, type RunStatus } from './digest/index.js';
 import type { RigConfig } from './config.js';
 import { lastBeat, type Beat } from './heartbeat.js';
 
@@ -6,7 +7,7 @@ export type Status = {
   adapter: string;
   installed: string;
   lastBeat: Beat | null;
-  nights: string[];
+  nights: { night: string; counts: Record<RunStatus, number> }[];
 };
 
 // Nights on disk = runs/<YYYY-MM-DD>.jsonl, newest first.
@@ -27,6 +28,13 @@ export function readStatus(config: RigConfig): Status {
     adapter: config.adapter,
     installed: config.installed,
     lastBeat: lastBeat(),
-    nights: nightsOnDisk(config.runsDir),
+    nights: nightsOnDisk(config.runsDir).flatMap((night) => {
+      const result = readNight(config.runsDir, night);
+      // A file may disappear after the directory was listed.
+      if (result.kind === 'missing') return [];
+      const counts: Record<RunStatus, number> = { ok: 0, retry: 0, fail: 0 };
+      for (const row of result.rows) counts[row.lastStatus]++;
+      return [{ night, counts }];
+    }),
   };
 }
