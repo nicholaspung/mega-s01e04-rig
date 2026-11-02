@@ -7,7 +7,6 @@ passed tests and typechecking. A fetch of the original URL matched the local cle
 export byte for byte: “no marker set”, old marker absent, five jobs, one inline
 style, no scripts or external resources. The completed plan is archived in
 [2026-10-29-morning-digest.md](plans/done/2026-10-29-morning-digest.md).
-Issue #7 awaits integration of the archive.
 
 The procedure below documents publication and cleanup. Future publication still
 requires explicit approval.

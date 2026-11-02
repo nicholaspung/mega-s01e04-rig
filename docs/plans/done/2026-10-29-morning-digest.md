@@ -97,4 +97,3 @@ successfully. Its HTML matched the local clean export byte for byte: banner
 “no marker set”, previous marker absent, five jobs, one inline stylesheet, no
 scripts or external resources. No cache bypass was needed. The local ignored
 .env no longer sets LANE_MARKER, and the clean export ran with it unset.
-Issue #7 remains open until this archive is integrated.
