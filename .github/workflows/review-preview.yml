@@ -47,7 +47,7 @@ jobs:
             exit 1
           fi
           if [[ "$WITH_MARKER" != true ]]; then
-            export LANE_MARKER=''
+            unset LANE_MARKER
           fi
           mkdir -p "$RUNNER_TEMP/review-preview"
           bash scripts/export-preview.sh "$RUNNER_TEMP/review-preview/index.html"

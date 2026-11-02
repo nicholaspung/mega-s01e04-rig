@@ -33,7 +33,7 @@ After explicit approval of repository settings, secret installation and deployme
    looked; a submission acknowledgment alone does not complete review.
 
 After review and separate cleanup approval, run the same workflow with
-`with_marker: false` (the default). It exports an empty marker environment value,
+`with_marker: false` (the default). It unsets `LANE_MARKER`,
 so the banner reads **no marker set**, and replaces the page at the same Pages URL.
 Verify the public banner before completing cleanup issue #7 and archiving the plan.
 Artifact expiry does not remove the deployed site; cleanup requires this deployment.
