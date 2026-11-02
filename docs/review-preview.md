@@ -1,7 +1,16 @@
 # Review copy
 
-Preparation for issue #6. Publication and cleanup still need separate human
-approval; this document does not authorize either. Leave the issue and plan open.
+The reviewer has seen the published digest and issue #6 is closed. The approved
+cleanup replaced the same [public preview](https://nicholaspung.github.io/mega-s01e04-rig/)
+with its marker-free copy. [Deployment 41395912228](https://github.com/nicholaspung/mega-s01e04-rig/actions/runs/41395912228)
+passed tests and typechecking. A fetch of the original URL matched the local clean
+export byte for byte: “no marker set”, old marker absent, five jobs, one inline
+style, no scripts or external resources. The completed plan is archived in
+[2026-10-29-morning-digest.md](plans/done/2026-10-29-morning-digest.md).
+Issue #7 awaits integration of the archive.
+
+The procedure below documents publication and cleanup. Future publication still
+requires explicit approval.
 
 From the repository root with dependencies installed and Node 24:
 
@@ -32,7 +41,9 @@ After explicit approval of repository settings, secret installation and deployme
    plan's issues (#1–#7) to the reviewer. Keep #6 open until the reviewer has
    looked; a submission acknowledgment alone does not complete review.
 
-After review and separate cleanup approval, run the same workflow with
+For an approved cleanup, first remove the LANE_MARKER line from the local ignored
+.env and export using env -u LANE_MARKER bash scripts/export-preview.sh
+var/previews/clean/index.html. Run the same workflow with
 `with_marker: false` (the default). It unsets `LANE_MARKER`,
 so the banner reads **no marker set**, and replaces the page at the same Pages URL.
 Verify the public banner before completing cleanup issue #7 and archiving the plan.

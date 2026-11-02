@@ -1,6 +1,6 @@
 ---
 plan: morning-digest
-status: ready
+status: done
 owner: rook
 opened: 2026-10-29
 ---
@@ -77,3 +77,24 @@ page again with `LANE_MARKER` unset (the banner reads "no marker set") and uploa
 link. Move this plan to `docs/plans/done/` with its issue list.
 
 Done when: the preview link no longer shows the lane marker.
+
+## Completed work and verification
+
+- [#1 — Run log reader](https://github.com/nicholaspung/mega-s01e04-rig/issues/1)
+- [#2 — Digest page](https://github.com/nicholaspung/mega-s01e04-rig/issues/2)
+- [#3 — JSON endpoint](https://github.com/nicholaspung/mega-s01e04-rig/issues/3)
+- [#4 — Status board links](https://github.com/nicholaspung/mega-s01e04-rig/issues/4)
+- [#5 — Digest route tests](https://github.com/nicholaspung/mega-s01e04-rig/issues/5)
+- [#6 — Public review copy](https://github.com/nicholaspung/mega-s01e04-rig/issues/6)
+- [#7 — Marker removal and plan archive](https://github.com/nicholaspung/mega-s01e04-rig/issues/7)
+
+The course reviewer saw the public preview; #6 is closed. Cleanup was separately
+approved. [Cleanup deployment 41395912228](https://github.com/nicholaspung/mega-s01e04-rig/actions/runs/41395912228)
+succeeded on main with with_marker=false, including tests and typechecking.
+
+After deployment, curl fetched the original [public URL](https://nicholaspung.github.io/mega-s01e04-rig/)
+successfully. Its HTML matched the local clean export byte for byte: banner
+“no marker set”, previous marker absent, five jobs, one inline stylesheet, no
+scripts or external resources. No cache bypass was needed. The local ignored
+.env no longer sets LANE_MARKER, and the clean export ran with it unset.
+Issue #7 remains open until this archive is integrated.
